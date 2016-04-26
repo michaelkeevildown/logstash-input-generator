@@ -9,7 +9,10 @@ require "json"
 I18n.reload!
 
 class LogStash::Inputs::Generator < LogStash::Inputs::Base
-  require "logstash/inputs/functions/faker"
+  require "logstash/inputs/functions/common"
+  require "logstash/inputs/functions/banking"
+  require "logstash/inputs/functions/internet"
+  # require "logstash/inputs/functions/address"
 
   config_name "generator"
 
@@ -71,11 +74,11 @@ class LogStash::Inputs::Generator < LogStash::Inputs::Base
 
         # parse event schema
         if fields["group"].downcase == "common"
-          @value = ::LogStash::Inputs::Functions::FakerFunctions.parse_common(fields)
+          @value = ::LogStash::Inputs::Functions::Common.parse_common(fields)
         elsif fields["group"].downcase == "internet"
-          @value = ::LogStash::Inputs::Functions::FakerFunctions.parse_internet(fields)
+          @value = ::LogStash::Inputs::Functions::Internet.parse_internet(fields)
         elsif fields["group"].downcase == "banking"
-          @value = ::LogStash::Inputs::Functions::FakerFunctions.parse_banking(fields)
+          @value = ::LogStash::Inputs::Functions::Banking.parse_banking(fields)
         else
           @value = ""
         end
