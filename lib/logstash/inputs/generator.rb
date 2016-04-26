@@ -30,13 +30,13 @@ class LogStash::Inputs::Generator < LogStash::Inputs::Base
   # The default, `1`, means send a message every second.
   config :event_interval, :validate => :number, :default => 1
 
-  # The full path of the external dictionary file. The format of the table
+  # The full path of the external schema file. The format of the table
   # should be a standard JSON file.
   # NOTE: The JSON format only supports simple key/value, unnested objects.
   config :schema_path, :validate => :path
 
-  # When using a dictionary file, this setting will indicate how frequently
-  # (in seconds) logstash will check the dictionary file for updates.
+  # When using a schema file, this setting will indicate how frequently
+  # (in seconds) logstash will check the schema file for updates.
   config :schema_refresh_interval, :validate => :number, :default => 1
 
   ## Logstash Config Params ##
@@ -48,7 +48,7 @@ class LogStash::Inputs::Generator < LogStash::Inputs::Base
     if @schema_path
       @next_refresh = Time.now + @schema_refresh_interval
       raise_exception = true
-      load_dictionary(raise_exception)
+      load_schema(raise_exception)
     end
   end
 
@@ -57,21 +57,21 @@ class LogStash::Inputs::Generator < LogStash::Inputs::Base
     while !stop?
       if @schema_path
         if @next_refresh < Time.now
-          load_dictionary
+          load_schema
           @next_refresh = Time.now + @schema_refresh_interval
           @logger.info("refreshing schema")
         end
       end
 
       # set faker locale
-      Faker::Config.locale = @dictionary["locale"]
+      Faker::Config.locale = @schema["locale"]
       # create output hash
       @event_output = Hash.new
       # add defulat items to event
       @event_output["message"] = @message
       @event_output["host"] = @host
 
-      @dictionary["fields"].each do |fields|
+      @schema["fields"].each do |fields|
         # set key
         @key = fields["key"]
 
@@ -95,7 +95,7 @@ class LogStash::Inputs::Generator < LogStash::Inputs::Base
       event = LogStash::Event.new(@event_output)
       decorate(event)
       queue << event
-      Stud.stoppable_sleep(@dictionary["event_speed"]) { stop? }
+      Stud.stoppable_sleep(@schema["event_speed"]) { stop? }
     end
   end
 
@@ -131,11 +131,11 @@ class LogStash::Inputs::Generator < LogStash::Inputs::Base
     return @card_number
   end
 
-  def load_dictionary(raise_exception=false)
+  def load_schema(raise_exception=false)
     if @schema_path.end_with?(".json")
       load_json(raise_exception)
     else
-      raise "#{self.class.name}: Dictionary #{@schema_path} have a non valid format"
+      raise "#{self.class.name}: schema #{@schema_path} have a non valid format"
     end
   rescue => e
     loading_exception(e, raise_exception)
@@ -143,22 +143,22 @@ class LogStash::Inputs::Generator < LogStash::Inputs::Base
 
   def load_json(raise_exception=false)
     if !File.exists?(@schema_path)
-      @logger.warn("dictionary file read failure, continuing with old dictionary", :path => @schema_path)
+      @logger.warn("schema file read failure, continuing with old schema", :path => @schema_path)
       return
     end
-    merge_dictionary!(JSON.parse(File.read(@schema_path)), raise_exception)
+    merge_schema!(JSON.parse(File.read(@schema_path)), raise_exception)
   end
 
-  def merge_dictionary!(data, raise_exception=false)
-      @dictionary = data
+  def merge_schema!(data, raise_exception=false)
+      @schema = data
   end
 
   def loading_exception(e, raise_exception=false)
-    msg = "#{self.class.name}: #{e.message} when loading dictionary file at #{@schema_path}"
+    msg = "#{self.class.name}: #{e.message} when loading schema file at #{@schema_path}"
     if raise_exception
       raise RuntimeError.new(msg)
     else
-      @logger.warn("#{msg}, continuing with old dictionary", :schema_path => @schema_path)
+      @logger.warn("#{msg}, continuing with old schema", :schema_path => @schema_path)
     end
   end
 
