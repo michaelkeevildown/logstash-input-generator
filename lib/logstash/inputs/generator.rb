@@ -45,6 +45,7 @@ class LogStash::Inputs::Generator < LogStash::Inputs::Base
   def register
     @host = Socket.gethostname
 
+    # reload schema
     if @schema_path
       @next_refresh = Time.now + @schema_refresh_interval
       raise_exception = true
@@ -55,6 +56,7 @@ class LogStash::Inputs::Generator < LogStash::Inputs::Base
   def run(queue)
     # we can abort the loop if stop? becomes true
     while !stop?
+      # reload schema
       if @schema_path
         if @next_refresh < Time.now
           load_schema
