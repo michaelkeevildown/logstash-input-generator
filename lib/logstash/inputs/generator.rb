@@ -79,11 +79,11 @@ class LogStash::Inputs::Generator < LogStash::Inputs::Base
         elsif fields["type"].downcase == "integer"
           @value = parse_int(fields)
         elsif fields["type"].downcase == "ipv4"
-          @value = parse_ipv4(fields)
+          @value = gen_ipv4(fields)
         elsif fields["type"].downcase == "ipv6"
-          @value = parse_ipv6(fields)
+          @value = gen_ipv6(fields)
         elsif fields["type"].downcase == "credit_card"
-          @value = credit_card(fields)
+          @value = gen_credit_card(fields)
         end
 
         # append values to hash value
@@ -102,12 +102,15 @@ class LogStash::Inputs::Generator < LogStash::Inputs::Base
       @min = data["range"]["min"]
       @max = data["range"]["max"]
       return rand(@min..@max)
+    elsif data["random"]
+      # TODO -- specify size ? Is that not a range?
+      return rand(1000000000000000000)
     else
       return data["value"]
     end
   end
 
-  def parse_ipv4(data)
+  def gen_ipv4(data)
     if data["random"]
         return IPAddr.new(rand(2**32),Socket::AF_INET).to_s
     else
@@ -116,11 +119,11 @@ class LogStash::Inputs::Generator < LogStash::Inputs::Base
 
   end
 
-  def parse_ipv6(data)
+  def gen_ipv6(data)
     return IPAddr.new(rand(2**128),Socket::AF_INET6).to_s
   end
 
-  def credit_card(data)
+  def gen_credit_card(data)
     @card_number = Faker::Finance.credit_card("visa")
     @card_number.gsub! '-', ''
     return @card_number
