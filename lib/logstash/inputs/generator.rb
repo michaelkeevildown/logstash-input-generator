@@ -28,16 +28,16 @@ class LogStash::Inputs::Generator < LogStash::Inputs::Base
   # Set how frequently messages should be sent.
   #
   # The default, `1`, means send a message every second.
-  config :event_interval, :validate => :number, :default => 0.5
+  config :event_interval, :validate => :number, :default => 1
 
   # The full path of the external dictionary file. The format of the table
   # should be a standard JSON file.
   # NOTE: The JSON format only supports simple key/value, unnested objects.
-  config :dictionary_path, :validate => :path
+  config :schema_path, :validate => :path
 
   # When using a dictionary file, this setting will indicate how frequently
   # (in seconds) logstash will check the dictionary file for updates.
-  config :schema_refresh_interval, :validate => :number, :default => 300
+  config :schema_refresh_interval, :validate => :number, :default => 1
 
   ## Logstash Config Params ##
 
@@ -45,7 +45,7 @@ class LogStash::Inputs::Generator < LogStash::Inputs::Base
   def register
     @host = Socket.gethostname
 
-    if @dictionary_path
+    if @schema_path
       @next_refresh = Time.now + @schema_refresh_interval
       raise_exception = true
       load_dictionary(raise_exception)
@@ -55,7 +55,7 @@ class LogStash::Inputs::Generator < LogStash::Inputs::Base
   def run(queue)
     # we can abort the loop if stop? becomes true
     while !stop?
-      if @dictionary_path
+      if @schema_path
         if @next_refresh < Time.now
           load_dictionary
           @next_refresh = Time.now + @schema_refresh_interval
@@ -63,8 +63,10 @@ class LogStash::Inputs::Generator < LogStash::Inputs::Base
         end
       end
 
+      # set faker locale
+      Faker::Config.locale = @dictionary["locale"]
+      # create output hash
       @event_output = Hash.new
-
       # add defulat items to event
       @event_output["message"] = @message
       @event_output["host"] = @host
@@ -130,21 +132,21 @@ class LogStash::Inputs::Generator < LogStash::Inputs::Base
   end
 
   def load_dictionary(raise_exception=false)
-    if @dictionary_path.end_with?(".json")
+    if @schema_path.end_with?(".json")
       load_json(raise_exception)
     else
-      raise "#{self.class.name}: Dictionary #{@dictionary_path} have a non valid format"
+      raise "#{self.class.name}: Dictionary #{@schema_path} have a non valid format"
     end
   rescue => e
     loading_exception(e, raise_exception)
   end
 
   def load_json(raise_exception=false)
-    if !File.exists?(@dictionary_path)
-      @logger.warn("dictionary file read failure, continuing with old dictionary", :path => @dictionary_path)
+    if !File.exists?(@schema_path)
+      @logger.warn("dictionary file read failure, continuing with old dictionary", :path => @schema_path)
       return
     end
-    merge_dictionary!(JSON.parse(File.read(@dictionary_path)), raise_exception)
+    merge_dictionary!(JSON.parse(File.read(@schema_path)), raise_exception)
   end
 
   def merge_dictionary!(data, raise_exception=false)
@@ -152,11 +154,11 @@ class LogStash::Inputs::Generator < LogStash::Inputs::Base
   end
 
   def loading_exception(e, raise_exception=false)
-    msg = "#{self.class.name}: #{e.message} when loading dictionary file at #{@dictionary_path}"
+    msg = "#{self.class.name}: #{e.message} when loading dictionary file at #{@schema_path}"
     if raise_exception
       raise RuntimeError.new(msg)
     else
-      @logger.warn("#{msg}, continuing with old dictionary", :dictionary_path => @dictionary_path)
+      @logger.warn("#{msg}, continuing with old dictionary", :schema_path => @schema_path)
     end
   end
 
