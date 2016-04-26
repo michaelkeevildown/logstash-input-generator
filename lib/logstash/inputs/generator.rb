@@ -22,9 +22,6 @@ class LogStash::Inputs::Generator < LogStash::Inputs::Base
 
   ## Logstash Config Params ##
 
-  # The message string to use in the event.
-  config :message, :validate => :string, :default => "Hello World!"
-
   # Set how frequently messages should be sent.
   #
   # The default, `1`, means send a message every second.
@@ -70,7 +67,6 @@ class LogStash::Inputs::Generator < LogStash::Inputs::Base
       # create output hash
       @event_output = Hash.new
       # add defulat items to event
-      @event_output["message"] = @message
       @event_output["host"] = @host
 
       @schema["fields"].each do |fields|
