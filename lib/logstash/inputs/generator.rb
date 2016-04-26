@@ -10,9 +10,8 @@ I18n.reload!
 
 class LogStash::Inputs::Generator < LogStash::Inputs::Base
   require "logstash/inputs/functions/common"
-  require "logstash/inputs/functions/banking"
+  require "logstash/inputs/functions/finance"
   require "logstash/inputs/functions/internet"
-  # require "logstash/inputs/functions/address"
 
   config_name "generator"
 
@@ -77,8 +76,8 @@ class LogStash::Inputs::Generator < LogStash::Inputs::Base
           @value = ::LogStash::Inputs::Functions::Common.parse_common(fields)
         elsif fields["group"].downcase == "internet"
           @value = ::LogStash::Inputs::Functions::Internet.parse_internet(fields)
-        elsif fields["group"].downcase == "banking"
-          @value = ::LogStash::Inputs::Functions::Banking.parse_banking(fields)
+        elsif fields["group"].downcase == "finance"
+          @value = ::LogStash::Inputs::Functions::Finance.parse_finance(fields)
         else
           @value = ""
         end
