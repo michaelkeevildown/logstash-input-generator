@@ -4,17 +4,13 @@ require "logstash/namespace"
 require "stud/interval"
 require "socket" # for Socket.gethostname
 require "json"
-require 'ipaddr'
-require 'faker'
 
 # bug with faker - https://github.com/stympy/faker/issues/278
 I18n.reload!
 
-# Generate a repeating message.
-#
-# This plugin is intented only as an example.
-
 class LogStash::Inputs::Generator < LogStash::Inputs::Base
+  require "logstash/inputs/functions/faker"
+
   config_name "generator"
 
   # If undefined, Logstash will complain, even if codec is unused.
@@ -74,16 +70,14 @@ class LogStash::Inputs::Generator < LogStash::Inputs::Base
         @key = fields["key"]
 
         # parse event schema
-        if fields["type"].downcase == "string"
-          @value = fields["value"]
-        elsif fields["type"].downcase == "integer"
-          @value = parse_int(fields)
-        elsif fields["type"].downcase == "ipv4"
-          @value = gen_ipv4(fields)
-        elsif fields["type"].downcase == "ipv6"
-          @value = gen_ipv6(fields)
-        elsif fields["type"].downcase == "credit_card"
-          @value = gen_credit_card(fields)
+        if fields["group"].downcase == "common"
+          @value = ::LogStash::Inputs::Functions::FakerFunctions.parse_common(fields)
+        elsif fields["group"].downcase == "internet"
+          @value = ::LogStash::Inputs::Functions::FakerFunctions.parse_internet(fields)
+        elsif fields["group"].downcase == "banking"
+          @value = ::LogStash::Inputs::Functions::FakerFunctions.parse_banking(fields)
+        else
+          @value = ""
         end
 
         # append values to hash value
@@ -95,38 +89,6 @@ class LogStash::Inputs::Generator < LogStash::Inputs::Base
       queue << event
       Stud.stoppable_sleep(@schema["event_speed"]) { stop? }
     end
-  end
-
-  def parse_int(data)
-    if data["range"]
-      @min = data["range"]["min"]
-      @max = data["range"]["max"]
-      return rand(@min..@max)
-    elsif data["random"]
-      # TODO -- specify size ? Is that not a range?
-      return rand(1000000000000000000)
-    else
-      return data["value"]
-    end
-  end
-
-  def gen_ipv4(data)
-    if data["random"]
-        return IPAddr.new(rand(2**32),Socket::AF_INET).to_s
-    else
-        return data["value"]
-    end
-
-  end
-
-  def gen_ipv6(data)
-    return IPAddr.new(rand(2**128),Socket::AF_INET6).to_s
-  end
-
-  def gen_credit_card(data)
-    @card_number = Faker::Finance.credit_card("visa")
-    @card_number.gsub! '-', ''
-    return @card_number
   end
 
   def load_schema(raise_exception=false)
