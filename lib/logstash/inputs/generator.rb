@@ -13,6 +13,7 @@ class LogStash::Inputs::Generator < LogStash::Inputs::Base
   require "logstash/inputs/functions/finance"
   require "logstash/inputs/functions/internet"
   require "logstash/inputs/functions/address"
+  require "logstash/inputs/functions/color"
 
   config_name "generator"
 
@@ -81,6 +82,8 @@ class LogStash::Inputs::Generator < LogStash::Inputs::Base
           @value = ::LogStash::Inputs::Functions::Finance.parse_finance(fields)
         elsif fields["group"].downcase == "address"
           @value = ::LogStash::Inputs::Functions::Address.parse_address(fields)
+        elsif fields["group"].downcase == "color"
+          @value = ::LogStash::Inputs::Functions::Color.parse_color(fields)
         else
           @value = ""
         end
