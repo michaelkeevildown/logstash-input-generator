@@ -4,7 +4,7 @@ require 'faker'
 module LogStash; module Inputs; class Functions;
   class Commerce
 
-    def self.parse_commerce(data)
+    def self.parse(data)
       if data["type"].downcase == "department"
         gen_department
       elsif data["type"].downcase == "product_name"

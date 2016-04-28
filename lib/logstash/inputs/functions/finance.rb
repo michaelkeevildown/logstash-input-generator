@@ -5,7 +5,7 @@ require 'faker'
 module LogStash; module Inputs; class Functions;
   class Finance
 
-    def self.parse_finance(data)
+    def self.parse(data)
       if data["type"].downcase == "credit_card_number"
         gen_credit_card_number(data)
       elsif data["type"].downcase == "credit_card_type"

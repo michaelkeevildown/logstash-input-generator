@@ -4,7 +4,7 @@ require 'faker'
 module LogStash; module Inputs; class Functions;
   class Color
 
-    def self.parse_color(data)
+    def self.parse(data)
       if data["type"].downcase == "hex_color"
         gen_hex_color
       elsif data["type"].downcase == "color_name"

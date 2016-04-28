@@ -5,7 +5,7 @@ require 'faker'
 module LogStash; module Inputs; class Functions;
   class Address
 
-    def self.parse_address(data)
+    def self.parse(data)
       if data["type"].downcase == "city"
         gen_city
       elsif data["type"].downcase == "street_name"

@@ -6,7 +6,7 @@ module LogStash; module Inputs; class Functions;
   class Internet
 
     # parse internet type
-    def self.parse_internet(data)
+    def self.parse(data)
         if data["type"].downcase == "ipv4"
           gen_ipv4(data)
         elsif data["type"].downcase == "ipv6"

@@ -4,7 +4,7 @@ require 'faker'
 module LogStash; module Inputs; class Functions;
   class Lorem
 
-    def self.parse_lorem(data)
+    def self.parse(data)
       if data["type"].downcase == "word"
         gen_word(data)
       elsif data["type"].downcase == "characters"

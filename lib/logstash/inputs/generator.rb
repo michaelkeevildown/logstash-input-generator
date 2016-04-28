@@ -77,19 +77,19 @@ class LogStash::Inputs::Generator < LogStash::Inputs::Base
 
         # parse event schema
         if fields["group"].downcase == "common"
-          @value = ::LogStash::Inputs::Functions::Common.parse_common(fields)
+          @value = ::LogStash::Inputs::Functions::Common.parse(fields)
         elsif fields["group"].downcase == "internet"
-          @value = ::LogStash::Inputs::Functions::Internet.parse_internet(fields)
+          @value = ::LogStash::Inputs::Functions::Internet.parse(fields)
         elsif fields["group"].downcase == "finance"
-          @value = ::LogStash::Inputs::Functions::Finance.parse_finance(fields)
+          @value = ::LogStash::Inputs::Functions::Finance.parse(fields)
         elsif fields["group"].downcase == "address"
-          @value = ::LogStash::Inputs::Functions::Address.parse_address(fields)
+          @value = ::LogStash::Inputs::Functions::Address.parse(fields)
         elsif fields["group"].downcase == "color"
-          @value = ::LogStash::Inputs::Functions::Color.parse_color(fields)
+          @value = ::LogStash::Inputs::Functions::Color.parse(fields)
         elsif fields["group"].downcase == "commerce"
-          @value = ::LogStash::Inputs::Functions::Commerce.parse_commerce(fields)
+          @value = ::LogStash::Inputs::Functions::Commerce.parse(fields)
         elsif fields["group"].downcase == "lorem"
-          @value = ::LogStash::Inputs::Functions::Lorem.parse_lorem(fields)
+          @value = ::LogStash::Inputs::Functions::Lorem.parse(fields)
         else
           @value = ""
         end

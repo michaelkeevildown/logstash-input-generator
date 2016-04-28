@@ -5,7 +5,7 @@ require 'faker'
 module LogStash; module Inputs; class Functions;
   class Common
 
-    def self.parse_common(data)
+    def self.parse(data)
       if data["type"].downcase == "string"
         return data["value"]
       elsif data["type"].downcase == "integer"
