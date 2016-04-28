@@ -10,6 +10,8 @@ module LogStash; module Inputs; class Functions;
         return data["value"]
       elsif data["type"].downcase == "integer"
         int(data)
+      elsif data["type"].downcase == "random_list"
+        random_list(data)
       else
         @value = "INVALID COMMON TYPE"
       end
@@ -28,6 +30,15 @@ module LogStash; module Inputs; class Functions;
         return rand(1000000000000000000)
       else
         return data["value"]
+      end
+    end
+
+    def self.random_list(data)
+      if !data["properties"].nil? && !data["properties"]["list"].nil?
+        @list = data["properties"]["list"]
+        return @list.sample
+      else
+        return "INVALID LIST"
       end
     end
 
