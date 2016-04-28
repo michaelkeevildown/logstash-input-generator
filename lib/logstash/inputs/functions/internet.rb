@@ -23,6 +23,8 @@ module LogStash; module Inputs; class Functions;
           gen_mac_address
         elsif data["type"].downcase == "url"
           gen_url(data)
+        else
+          @value = "INVALID INTERNET TYPE"
         end
     end
 

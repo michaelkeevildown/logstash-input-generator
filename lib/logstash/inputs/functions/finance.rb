@@ -16,6 +16,8 @@ module LogStash; module Inputs; class Functions;
         gen_bitcoin_address
       elsif data["type"].downcase == "bitcoin_testnet_address"
         gen_bitcoin_testnet_address
+      else
+        @value = "INVALID FINANCE TYPE"
       end
     end
 

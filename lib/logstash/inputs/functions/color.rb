@@ -15,6 +15,8 @@ module LogStash; module Inputs; class Functions;
         gen_hsl_color
       elsif data["type"].downcase == "hsla_color"
         gen_hsla_color
+      else
+        @value = "INVALID COLOR TYPE"
       end
     end
 

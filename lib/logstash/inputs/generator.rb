@@ -94,7 +94,7 @@ class LogStash::Inputs::Generator < LogStash::Inputs::Base
         elsif fields["group"].downcase == "person"
           @value = ::LogStash::Inputs::Functions::Person.parse(fields)
         else
-          @value = ""
+          @value = "INVALID GROUP"
         end
 
         # append values to hash value

@@ -7,8 +7,6 @@ module LogStash; module Inputs; class Functions;
     def self.parse(data)
       if data["type"].downcase == "name"
         name
-      elsif data["type"].downcase == "name_with_middle"
-        name_with_middle
       elsif data["type"].downcase == "first_name"
         first_name
       elsif data["type"].downcase == "last_name"
@@ -19,6 +17,8 @@ module LogStash; module Inputs; class Functions;
         suffix
       elsif data["type"].downcase == "title"
         title
+      else
+        @value = "INVALID PERSON TYPE"
       end
     end
 

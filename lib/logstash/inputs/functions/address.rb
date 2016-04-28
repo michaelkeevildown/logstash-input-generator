@@ -42,6 +42,8 @@ module LogStash; module Inputs; class Functions;
         gen_latitude
       elsif data["type"].downcase == "longitude"
         gen_longitude
+      else
+        @value = "INVALID ADDRESS TYPE"
       end
     end
 

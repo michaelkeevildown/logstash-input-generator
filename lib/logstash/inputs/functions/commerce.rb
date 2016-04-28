@@ -11,6 +11,8 @@ module LogStash; module Inputs; class Functions;
         gen_product_name
       elsif data["type"].downcase == "price"
         gen_price
+      else
+        @value = "INVALID COMMERCE TYPE"
       end
     end
 

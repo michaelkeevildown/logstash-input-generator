@@ -17,6 +17,8 @@ module LogStash; module Inputs; class Functions;
         gen_paragraph(data)
       elsif data["type"].downcase == "paragraphs"
         gen_paragraphs(data)
+      else
+        @value = "INVALID LOREM TYPE"
       end
     end
 

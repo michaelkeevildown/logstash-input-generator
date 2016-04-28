@@ -10,6 +10,8 @@ module LogStash; module Inputs; class Functions;
         return data["value"]
       elsif data["type"].downcase == "integer"
         parse_int(data)
+      else
+        @value = "INVALID COMMON TYPE"
       end
     end
 
