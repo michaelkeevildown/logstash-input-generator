@@ -6,17 +6,17 @@ module LogStash; module Inputs; class Functions;
 
     def self.parse(data)
       if data["type"].downcase == "word"
-        gen_word(data)
+        word(data)
       elsif data["type"].downcase == "characters"
-        gen_characters(data)
+        characters(data)
       elsif data["type"].downcase == "sentence"
-        gen_sentence(data)
+        sentence(data)
       elsif data["type"].downcase == "sentences"
-        gen_sentences(data)
+        sentences(data)
       elsif data["type"].downcase == "paragraph"
-        gen_paragraph(data)
+        paragraph(data)
       elsif data["type"].downcase == "paragraphs"
-        gen_paragraphs(data)
+        paragraphs(data)
       else
         @value = "INVALID LOREM TYPE"
       end
@@ -25,7 +25,7 @@ module LogStash; module Inputs; class Functions;
     ############################
     ## custom functions below ##
     ############################
-    def self.gen_word(data)
+    def self.word(data)
       # This could be cleaner with a set number else 1, would remove if statement
       if !data["properties"].nil? && !data["properties"]["number"].nil?
         @number = data["properties"]["number"]
@@ -35,7 +35,7 @@ module LogStash; module Inputs; class Functions;
       end
     end
 
-    def self.gen_characters(data)
+    def self.characters(data)
       if !data["properties"].nil? && !data["properties"]["count"].nil?
         @count = data["properties"]["count"]
         return Faker::Lorem.characters(@count)
@@ -44,7 +44,7 @@ module LogStash; module Inputs; class Functions;
       end
     end
 
-    def self.gen_sentence(data)
+    def self.sentence(data)
       if !data["properties"].nil? && !data["properties"]["number"].nil?
         @count = data["properties"]["number"]
         return Faker::Lorem.sentence(@count)
@@ -53,7 +53,7 @@ module LogStash; module Inputs; class Functions;
       end
     end
 
-    def self.gen_sentences(data)
+    def self.sentences(data)
       if !data["properties"].nil? && !data["properties"]["number"].nil?
         @count = data["properties"]["number"]
         return Faker::Lorem.sentences(@count)
@@ -62,7 +62,7 @@ module LogStash; module Inputs; class Functions;
       end
     end
 
-    def self.gen_paragraph(data)
+    def self.paragraph(data)
       if !data["properties"].nil? && !data["properties"]["number"].nil?
         @count = data["properties"]["number"]
         return Faker::Lorem.paragraph(@count)
@@ -71,7 +71,7 @@ module LogStash; module Inputs; class Functions;
       end
     end
 
-    def self.gen_paragraphs(data)
+    def self.paragraphs(data)
       if !data["properties"].nil? && !data["properties"]["number"].nil?
         @count = data["properties"]["number"]
         return Faker::Lorem.paragraphs(@count)

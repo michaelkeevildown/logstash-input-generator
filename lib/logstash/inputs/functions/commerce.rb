@@ -6,11 +6,11 @@ module LogStash; module Inputs; class Functions;
 
     def self.parse(data)
       if data["type"].downcase == "department"
-        gen_department
+        department
       elsif data["type"].downcase == "product_name"
-        gen_product_name
+        product_name
       elsif data["type"].downcase == "price"
-        gen_price
+        price
       else
         @value = "INVALID COMMERCE TYPE"
       end
@@ -19,15 +19,15 @@ module LogStash; module Inputs; class Functions;
     ############################
     ## custom functions below ##
     ############################
-    def self.gen_department
+    def self.department
       return Faker::Commerce.department
     end
 
-    def self.gen_product_name
+    def self.product_name
       return Faker::Commerce.product_name
     end
 
-    def self.gen_price
+    def self.price
       return Faker::Commerce.price
     end
 

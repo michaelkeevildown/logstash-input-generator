@@ -8,21 +8,21 @@ module LogStash; module Inputs; class Functions;
     # parse internet type
     def self.parse(data)
         if data["type"].downcase == "ipv4"
-          gen_ipv4(data)
+          ipv4(data)
         elsif data["type"].downcase == "ipv6"
-          gen_ipv6(data)
+          ipv6(data)
         elsif data["type"].downcase == "email"
-          gen_email(data)
+          email(data)
         elsif data["type"].downcase == "username"
-          gen_username
+          username
         elsif data["type"].downcase == "password"
-          gen_password(data)
+          password(data)
         elsif data["type"].downcase == "domain"
-          gen_domain(data)
+          domain(data)
         elsif data["type"].downcase == "mac_address"
-          gen_mac_address
+          mac_address
         elsif data["type"].downcase == "url"
-          gen_url(data)
+          url(data)
         else
           @value = "INVALID INTERNET TYPE"
         end
@@ -32,7 +32,7 @@ module LogStash; module Inputs; class Functions;
     ## custom functions below ##
     ############################
     # ip data
-    def self.gen_ipv4(data)
+    def self.ipv4(data)
       if !data["sub-type"].nil? && data["sub-type"].downcase == "ipv4_cidr"
         return Faker::Internet.ip_v4_cidr
       else
@@ -40,7 +40,7 @@ module LogStash; module Inputs; class Functions;
       end
     end
 
-    def self.gen_ipv6(data)
+    def self.ipv6(data)
       if !data["sub-type"].nil? && data["sub-type"].downcase == "ipv6_cidr"
         return Faker::Internet.ip_v6_cidr
       else
@@ -49,7 +49,7 @@ module LogStash; module Inputs; class Functions;
     end
 
     # email data
-    def self.gen_email(data)
+    def self.email(data)
       if !data["properties"].nil? && !data["properties"]["name"].nil?
         @name = data["properties"]["name"]
         return Faker::Internet.free_email(@name)
@@ -59,12 +59,12 @@ module LogStash; module Inputs; class Functions;
     end
 
     # user_name
-    def self.gen_username
+    def self.username
       return Faker::Internet.user_name
     end
 
     # password
-    def self.gen_password(data)
+    def self.password(data)
       if !data["properties"].nil? && !data["properties"]["min"].nil? && !data["properties"]["max"].nil? && !data["properties"]["special_chars"].nil?
         @min = data["properties"]["min"]
         @max = data["properties"]["max"]
@@ -79,7 +79,7 @@ module LogStash; module Inputs; class Functions;
     end
 
     # domain
-    def self.gen_domain(data)
+    def self.domain(data)
       if !data["sub-type"].nil? && data["sub-type"].downcase == "domain_word"
         return Faker::Internet.domain_word
       elsif !data["sub-type"].nil? && data["sub-type"].downcase == "domain_suffix"
@@ -90,12 +90,12 @@ module LogStash; module Inputs; class Functions;
     end
 
     # mac_address
-    def self.gen_mac_address
+    def self.mac_address
       return Faker::Internet.mac_address
     end
 
     # url
-    def self.gen_url(data)
+    def self.url(data)
       if !data["properties"].nil? && !data["properties"]["domain"].nil? && !data["properties"]["uri"].nil?
         @domain = data["properties"]["domain"]
         @uri = data["properties"]["uri"]

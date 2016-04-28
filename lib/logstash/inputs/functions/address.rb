@@ -7,41 +7,41 @@ module LogStash; module Inputs; class Functions;
 
     def self.parse(data)
       if data["type"].downcase == "city"
-        gen_city
+        city
       elsif data["type"].downcase == "street_name"
-        gen_street_name
+        street_name
       elsif data["type"].downcase == "street_address"
-        gen_street_address
+        street_address
       elsif data["type"].downcase == "secondary_address"
-        gen_secondary_address
+        secondary_address
       elsif data["type"].downcase == "building_number"
-        gen_building_number
+        building_number
       elsif data["type"].downcase == "zip_code"
-        gen_zip_code
+        zip_code
       elsif data["type"].downcase == "zip"
-        gen_zip
+        zip
       elsif data["type"].downcase == "postcode"
-        gen_postcode
+        postcode
       elsif data["type"].downcase == "time_zone"
-        gen_time_zone
+        time_zone
       elsif data["type"].downcase == "street_suffix"
-        gen_street_suffix
+        street_suffix
       elsif data["type"].downcase == "city_prefix"
-        gen_city_prefix
+        city_prefix
       elsif data["type"].downcase == "city_suffix"
-        gen_city_suffix
+        city_suffix
       elsif data["type"].downcase == "state"
-        gen_state
+        state
       elsif data["type"].downcase == "state_abbr"
-        gen_state_abbr
+        state_abbr
       elsif data["type"].downcase == "country"
-        gen_country
+        country
       elsif data["type"].downcase == "country_code"
-        gen_country_code
+        country_code
       elsif data["type"].downcase == "latitude"
-        gen_latitude
+        latitude
       elsif data["type"].downcase == "longitude"
-        gen_longitude
+        longitude
       else
         @value = "INVALID ADDRESS TYPE"
       end
@@ -50,75 +50,75 @@ module LogStash; module Inputs; class Functions;
     ############################
     ## custom functions below ##
     ############################
-    def self.gen_city
+    def self.city
       return Faker::Address.city
     end
 
-    def self.gen_street_name
+    def self.street_name
       return Faker::Address.city
     end
 
-    def self.gen_street_address
+    def self.street_address
       return Faker::Address.street_address
     end
 
-    def self.gen_secondary_address
+    def self.secondary_address
       return Faker::Address.secondary_address
     end
 
-    def self.gen_building_number
+    def self.building_number
       return Faker::Address.building_number
     end
 
-    def self.gen_zip_code
+    def self.zip_code
       return Faker::Address.zip_code
     end
 
-    def self.gen_zip
+    def self.zip
       return Faker::Address.zip
     end
 
-    def self.gen_postcode
+    def self.postcode
       return Faker::Address.postcode
     end
 
-    def self.gen_time_zone
+    def self.time_zone
       return Faker::Address.time_zone
     end
 
-    def self.gen_street_suffix
+    def self.street_suffix
       return Faker::Address.street_suffix
     end
 
-    def self.gen_city_prefix
+    def self.city_prefix
       return Faker::Address.city_prefix
     end
 
-    def self.gen_city_suffix
+    def self.city_suffix
       return Faker::Address.city_suffix
     end
 
-    def self.gen_state
+    def self.state
       return Faker::Address.state
     end
 
-    def self.gen_state_abbr
+    def self.state_abbr
       return Faker::Address.state_abbr
     end
 
-    def self.gen_country
+    def self.country
       return Faker::Address.country
     end
 
-    def self.gen_country_code
+    def self.country_code
       return Faker::Address.country_code
     end
 
-    def self.gen_latitude
+    def self.latitude
       return Faker::Address.latitude
     end
 
-    def self.gen_longitude
+    def self.longitude
       return Faker::Address.longitude
     end
 

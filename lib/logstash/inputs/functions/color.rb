@@ -6,15 +6,15 @@ module LogStash; module Inputs; class Functions;
 
     def self.parse(data)
       if data["type"].downcase == "hex_color"
-        gen_hex_color
+        hex_color
       elsif data["type"].downcase == "color_name"
-        gen_color_name
+        color_name
       elsif data["type"].downcase == "rgb_color"
-        gen_rgb_color
+        rgb_color
       elsif data["type"].downcase == "hsl_color"
-        gen_hsl_color
+        hsl_color
       elsif data["type"].downcase == "hsla_color"
-        gen_hsla_color
+        hsla_color
       else
         @value = "INVALID COLOR TYPE"
       end
@@ -23,23 +23,23 @@ module LogStash; module Inputs; class Functions;
     ############################
     ## custom functions below ##
     ############################
-    def self.gen_hex_color
+    def self.hex_color
       return Faker::Color.hex_color
     end
 
-    def self.gen_color_name
+    def self.color_name
       return Faker::Color.color_name
     end
 
-    def self.gen_rgb_color
+    def self.rgb_color
       return Faker::Color.rgb_color
     end
 
-    def self.gen_hsl_color
+    def self.hsl_color
       return Faker::Color.hsl_color
     end
 
-    def self.gen_hsla_color
+    def self.hsla_color
       return Faker::Color.hsla_color
     end
 
