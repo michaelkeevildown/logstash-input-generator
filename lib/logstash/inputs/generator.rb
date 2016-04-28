@@ -15,6 +15,7 @@ class LogStash::Inputs::Generator < LogStash::Inputs::Base
   require "logstash/inputs/functions/address"
   require "logstash/inputs/functions/color"
   require "logstash/inputs/functions/commerce"
+  require "logstash/inputs/functions/lorem"
 
   config_name "generator"
 
@@ -85,8 +86,10 @@ class LogStash::Inputs::Generator < LogStash::Inputs::Base
           @value = ::LogStash::Inputs::Functions::Address.parse_address(fields)
         elsif fields["group"].downcase == "color"
           @value = ::LogStash::Inputs::Functions::Color.parse_color(fields)
-        elsif fields["group"].downcase == "ecommerce"
+        elsif fields["group"].downcase == "commerce"
           @value = ::LogStash::Inputs::Functions::Commerce.parse_commerce(fields)
+        elsif fields["group"].downcase == "lorem"
+          @value = ::LogStash::Inputs::Functions::Lorem.parse_lorem(fields)
         else
           @value = ""
         end
