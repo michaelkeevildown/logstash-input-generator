@@ -9,7 +9,7 @@ module LogStash; module Inputs; class Functions;
       if data["type"].downcase == "string"
         return data["value"]
       elsif data["type"].downcase == "integer"
-        parse_int(data)
+        int(data)
       else
         @value = "INVALID COMMON TYPE"
       end
@@ -18,7 +18,7 @@ module LogStash; module Inputs; class Functions;
     ############################
     ## custom functions below ##
     ############################
-    def self.parse_int(data)
+    def self.int(data)
       if data["range"]
         @min = data["range"]["min"]
         @max = data["range"]["max"]
