@@ -23,6 +23,8 @@ module LogStash; module Inputs; class Functions;
           mac_address
         elsif data["type"].downcase == "url"
           url(data)
+        elsif data["type"].downcase == "port"
+          port
         else
           @value = "INVALID INTERNET TYPE"
         end
@@ -31,7 +33,6 @@ module LogStash; module Inputs; class Functions;
     ############################
     ## custom functions below ##
     ############################
-    # ip data
     def self.ipv4(data)
       if !data["sub-type"].nil? && data["sub-type"].downcase == "ipv4_cidr"
         return Faker::Internet.ip_v4_cidr
@@ -48,7 +49,6 @@ module LogStash; module Inputs; class Functions;
       end
     end
 
-    # email data
     def self.email(data)
       if !data["properties"].nil? && !data["properties"]["name"].nil?
         @name = data["properties"]["name"]
@@ -58,12 +58,10 @@ module LogStash; module Inputs; class Functions;
       end
     end
 
-    # user_name
     def self.username
       return Faker::Internet.user_name
     end
 
-    # password
     def self.password(data)
       if !data["properties"].nil? && !data["properties"]["min"].nil? && !data["properties"]["max"].nil? && !data["properties"]["special_chars"].nil?
         @min = data["properties"]["min"]
@@ -78,7 +76,6 @@ module LogStash; module Inputs; class Functions;
       end
     end
 
-    # domain
     def self.domain(data)
       if !data["sub-type"].nil? && data["sub-type"].downcase == "domain_word"
         return Faker::Internet.domain_word
@@ -89,12 +86,10 @@ module LogStash; module Inputs; class Functions;
       end
     end
 
-    # mac_address
     def self.mac_address
       return Faker::Internet.mac_address
     end
 
-    # url
     def self.url(data)
       if !data["properties"].nil? && !data["properties"]["domain"].nil? && !data["properties"]["uri"].nil?
         @domain = data["properties"]["domain"]
@@ -106,7 +101,12 @@ module LogStash; module Inputs; class Functions;
       else
         return Faker::Internet.url
       end
+    end
 
+    def self.port
+      @min = 0
+      @max = 65536
+      return rand(@min..@max)
     end
 
   end
