@@ -9,7 +9,7 @@ module LogStash; module Inputs; class Functions;
       if data["type"].downcase == "string"
         return data["value"]
       elsif data["type"].downcase == "integer"
-        int(data)
+        integer(data)
       elsif data["type"].downcase == "random_list"
         random_list(data)
       else
@@ -20,7 +20,7 @@ module LogStash; module Inputs; class Functions;
     ############################
     ## custom functions below ##
     ############################
-    def self.int(data)
+    def self.integer(data)
       if data["range"]
         @min = data["range"]["min"]
         @max = data["range"]["max"]
