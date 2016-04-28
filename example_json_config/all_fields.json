@@ -1,0 +1,496 @@
+{
+  "event_speed": 1,
+  "locale": "en-GB",
+  "fields": [
+    {
+      "group": "common",
+      "type": "string",
+      "key": "common-starter",
+      "value": "#############     start     ########################"
+    },
+    {
+      "group": "common",
+      "type": "string",
+      "key": "string_name",
+      "value": "this is a test string"
+    },
+    {
+      "group": "common",
+      "type": "integer",
+      "key": "number_range",
+      "value": "random",
+      "range": {
+        "min": 10,
+        "max": 100
+      }
+    },
+    {
+      "group": "common",
+      "type": "integer",
+      "key": "number_12",
+      "value": 12
+    },
+    {
+      "group": "common",
+      "type": "integer",
+      "key": "integer_random",
+      "random": true
+    },
+    {
+      "group": "common",
+      "type": "random",
+      "key": "random",
+      "properties": {
+        "list": [
+          "one",
+          "two",
+          "three",
+          "four",
+          "five",
+          "six",
+          "seven",
+          "eight",
+          "nine",
+          "ten",
+          "you get the idea ..."
+        ]
+      }
+    },
+    {
+      "group": "common",
+      "type": "string",
+      "key": "common-breaker",
+      "value": "#############     common     ########################"
+    },
+    {
+      "group": "finance",
+      "type": "credit_card_number",
+      "key": "credit_card_number",
+      "make": "visa"
+    },
+    {
+      "group": "finance",
+      "type": "credit_card_type",
+      "key": "credit_card_type"
+    },
+    {
+      "group": "finance",
+      "type": "credit_card_expiry",
+      "key": "credit_card_expiry"
+    },
+    {
+      "group": "finance",
+      "type": "bitcoin_address",
+      "key": "bitcoin_address"
+    },
+    {
+      "group": "finance",
+      "type": "bitcoin_testnet_address",
+      "key": "bitcoin_testnet_address"
+    },
+    {
+      "group": "common",
+      "type": "string",
+      "key": "finance-breaker",
+      "value": "#############     finance     ########################"
+    },
+    {
+      "group": "internet",
+      "type": "ipv4",
+      "key": "ipv4"
+    },
+    {
+      "group": "internet",
+      "type": "ipv4",
+      "sub-type": "ipv4_cidr",
+      "key": "ipv4_cidr"
+    },
+    {
+      "group": "internet",
+      "type": "ipv6",
+      "key": "ipv6"
+    },
+    {
+      "group": "internet",
+      "type": "ipv6",
+      "sub-type": "ipv6_cidr",
+      "key": "ipv6_cidr"
+    },
+    {
+      "group": "internet",
+      "type": "email",
+      "key": "email_address"
+    },
+    {
+      "group": "internet",
+      "type": "email",
+      "key": "complex_email_address",
+      "properties": {
+        "name": "michael"
+      }
+    },
+    {
+      "group": "internet",
+      "type": "username",
+      "key": "username"
+    },
+    {
+      "group": "internet",
+      "type": "password",
+      "key": "simple_password"
+    },
+    {
+      "group": "internet",
+      "type": "password",
+      "key": "password",
+      "properties": {
+        "min": 20,
+        "max": 30
+      }
+    },
+    {
+      "group": "internet",
+      "type": "password",
+      "key": "special_password",
+      "properties": {
+        "min": 20,
+        "max": 30,
+        "special_chars": true
+      }
+    },
+    {
+      "group": "internet",
+      "type": "domain",
+      "key": "domain"
+    },
+    {
+      "group": "internet",
+      "type": "domain",
+      "sub-type": "domain_word",
+      "key": "domain_word"
+    },
+    {
+      "group": "internet",
+      "type": "domain",
+      "sub-type": "domain_suffix",
+      "key": "domain_suffix"
+    },
+    {
+      "group": "internet",
+      "type": "mac_address",
+      "key": "mac_address"
+    },
+    {
+      "group": "internet",
+      "type": "url",
+      "key": "url"
+    },
+    {
+      "group": "internet",
+      "type": "url",
+      "key": "url_custom",
+      "properties": {
+        "domain": "text.com"
+      }
+    },
+    {
+      "group": "internet",
+      "type": "url",
+      "key": "url_custom_2",
+      "properties": {
+        "domain": "text.com",
+        "uri": "/google.html"
+      }
+    },
+    {
+      "group": "internet",
+      "type": "port",
+      "key": "port"
+    },
+    {
+      "group": "common",
+      "type": "string",
+      "key": "internet-breaker",
+      "value": "#############     internet     ########################"
+    },
+    {
+      "group": "address",
+      "type": "city",
+      "key": "city"
+    },
+    {
+      "group": "address",
+      "type": "street_name",
+      "key": "street_name"
+    },
+    {
+      "group": "address",
+      "type": "street_name",
+      "key": "street_name"
+    },
+    {
+      "group": "address",
+      "type": "secondary_address",
+      "key": "secondary_address"
+    },
+    {
+      "group": "address",
+      "type": "building_number",
+      "key": "building_number"
+    },
+    {
+      "group": "address",
+      "type": "zip_code",
+      "key": "zip_code"
+    },
+    {
+      "group": "address",
+      "type": "zip",
+      "key": "zip"
+    },
+    {
+      "group": "address",
+      "type": "postcode",
+      "key": "postcode"
+    },
+    {
+      "group": "address",
+      "type": "time_zone",
+      "key": "time_zone"
+    },
+    {
+      "group": "address",
+      "type": "street_suffix",
+      "key": "street_suffix"
+    },
+    {
+      "group": "address",
+      "type": "city_prefix",
+      "key": "city_prefix"
+    },
+    {
+      "group": "address",
+      "type": "city_suffix",
+      "key": "city_suffix"
+    },
+    {
+      "group": "address",
+      "type": "state",
+      "key": "state"
+    },
+    {
+      "group": "address",
+      "type": "state_abbr",
+      "key": "state_abbr"
+    },
+    {
+      "group": "address",
+      "type": "state_abbr",
+      "key": "state_abbr"
+    },
+    {
+      "group": "common",
+      "type": "string",
+      "key": "address-breaker",
+      "value": "#############     address     ########################"
+    },
+    {
+      "group": "color",
+      "type": "hex_color",
+      "key": "hex_color"
+    },
+    {
+      "group": "color",
+      "type": "color_name",
+      "key": "color_name"
+    },
+    {
+      "group": "color",
+      "type": "rgb_color",
+      "key": "rgb_color"
+    },
+    {
+      "group": "color",
+      "type": "hsl_color",
+      "key": "hsl_color"
+    },
+    {
+      "group": "color",
+      "type": "hsla_color",
+      "key": "hsla_color"
+    },
+    {
+      "group": "common",
+      "type": "string",
+      "key": "colour-breaker",
+      "value": "#############     colour     ########################"
+    },
+    {
+      "group": "commerce",
+      "type": "department",
+      "key": "department"
+    },
+    {
+      "group": "commerce",
+      "type": "product_name",
+      "key": "product_name"
+    },
+    {
+      "group": "commerce",
+      "type": "price",
+      "key": "price"
+    },
+    {
+      "group": "common",
+      "type": "string",
+      "key": "commerce-breaker",
+      "value": "#############     commerce     ########################"
+    },
+    {
+      "group": "lorem",
+      "type": "word",
+      "key": "word",
+      "properties": {
+        "number": 5
+      }
+    },
+    {
+      "group": "lorem",
+      "type": "characters",
+      "key": "characters",
+      "properties": {
+        "number": 5
+      }
+    },
+    {
+      "group": "lorem",
+      "type": "sentence",
+      "key": "sentence",
+      "properties": {
+        "number": 5
+      }
+    },
+    {
+      "group": "lorem",
+      "type": "sentences",
+      "key": "sentences",
+      "properties": {
+        "number": 5
+      }
+    },
+    {
+      "group": "lorem",
+      "type": "paragraph",
+      "key": "paragraph",
+      "properties": {
+        "number": 5
+      }
+    },
+    {
+      "group": "lorem",
+      "type": "paragraphs",
+      "key": "paragraphs",
+      "properties": {
+        "number": 5
+      }
+    },
+    {
+      "group": "common",
+      "type": "string",
+      "key": "lorem-breaker",
+      "value": "#############     lorem     ########################"
+    },
+    {
+      "group": "person",
+      "type": "name",
+      "key": "name"
+    },
+    {
+      "group": "person",
+      "type": "name_with_middle",
+      "key": "name_with_middle"
+    },
+    {
+      "group": "person",
+      "type": "name",
+      "key": "name"
+    },
+    {
+      "group": "person",
+      "type": "first_name",
+      "key": "first_name"
+    },
+    {
+      "group": "person",
+      "type": "last_name",
+      "key": "last_name"
+    },
+    {
+      "group": "person",
+      "type": "prefix",
+      "key": "prefix"
+    },
+    {
+      "group": "person",
+      "type": "suffix",
+      "key": "suffix"
+    },
+    {
+      "group": "person",
+      "type": "title",
+      "key": "title"
+    },
+    {
+      "group": "common",
+      "type": "string",
+      "key": "name-breaker",
+      "value": "#############     name     ########################"
+    },
+    {
+      "group": "random",
+      "type": "radom",
+      "key": "group_error"
+    },
+    {
+      "group": "address",
+      "type": "radom",
+      "key": "address_error"
+    },
+    {
+      "group": "color",
+      "type": "radom",
+      "key": "colour_error"
+    },
+    {
+      "group": "finance",
+      "type": "radom",
+      "key": "finance_error"
+    },
+    {
+      "group": "internet",
+      "type": "radom",
+      "key": "internet_error"
+    },
+    {
+      "group": "lorem",
+      "type": "radom",
+      "key": "lorem_error"
+    },
+    {
+      "group": "person",
+      "type": "radom",
+      "key": "person_error"
+    },
+    {
+      "group": "commerce",
+      "type": "radom",
+      "key": "commerce_error"
+    },
+    {
+      "group": "common",
+      "type": "string",
+      "key": "end-breaker",
+      "value": "#############     end     ########################"
+    }
+  ]
+}

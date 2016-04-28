@@ -1,0 +1,11 @@
+{
+  "event_speed": 1,
+  "locale": "en-GB",
+  "fields":[
+    {
+      "group": "commerce",
+      "type": "department",
+      "key": "department"
+    }
+  ]
+}
