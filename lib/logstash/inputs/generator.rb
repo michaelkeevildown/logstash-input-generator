@@ -70,6 +70,7 @@ class LogStash::Inputs::Generator < LogStash::Inputs::Base
       # create output hash
       @event_output = Hash.new
 
+      # call loop function
       @event_output = loop_params(@schema)
 
       # add defulat items to event
@@ -88,10 +89,21 @@ class LogStash::Inputs::Generator < LogStash::Inputs::Base
       if !field["group"].nil? && field["object"].nil?
         new_parent[new_key] = parse_config(field)
       else
-        new_parent[new_key] = loop_params(field)
+        if field["repeat"].nil? or field["repeat"] < 2
+          new_parent[new_key] = loop_params(field)
+        else
+          repeat = field["repeat"]
+          array = Array.new
+          repeat.times do |i|
+            hash = Hash.new
+            hash = loop_params(field)
+            array << hash
+          end
+          new_parent[new_key] = array
+        end
       end
     end
-    new_parent
+    return new_parent
   end
 
   def parse_config(fields)
