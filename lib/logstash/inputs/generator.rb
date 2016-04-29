@@ -69,43 +69,53 @@ class LogStash::Inputs::Generator < LogStash::Inputs::Base
       Faker::Config.locale = @schema["locale"]
       # create output hash
       @event_output = Hash.new
+
+      @event_output = loop_params(@schema)
+
       # add defulat items to event
       @event_output["host"] = @host
-
-      @schema["fields"].each do |fields|
-        # set key
-        @key = fields["key"]
-
-        # parse event schema
-        if fields["group"].downcase == "common"
-          @value = ::LogStash::Inputs::Functions::Common.parse(fields)
-        elsif fields["group"].downcase == "internet"
-          @value = ::LogStash::Inputs::Functions::Internet.parse(fields)
-        elsif fields["group"].downcase == "finance"
-          @value = ::LogStash::Inputs::Functions::Finance.parse(fields)
-        elsif fields["group"].downcase == "address"
-          @value = ::LogStash::Inputs::Functions::Address.parse(fields)
-        elsif fields["group"].downcase == "color"
-          @value = ::LogStash::Inputs::Functions::Color.parse(fields)
-        elsif fields["group"].downcase == "commerce"
-          @value = ::LogStash::Inputs::Functions::Commerce.parse(fields)
-        elsif fields["group"].downcase == "lorem"
-          @value = ::LogStash::Inputs::Functions::Lorem.parse(fields)
-        elsif fields["group"].downcase == "person"
-          @value = ::LogStash::Inputs::Functions::Person.parse(fields)
-        else
-          @value = "INVALID GROUP"
-        end
-
-        # append values to hash value
-        @event_output[@key] = @value
-      end
-
       event = LogStash::Event.new(@event_output)
       decorate(event)
       queue << event
       Stud.stoppable_sleep(@schema["event_speed"]) { stop? }
     end
+  end
+
+  def loop_params(schema)
+    new_parent = Hash.new
+    schema["fields"].each do |field|
+      new_key = field["key"]
+      if !field["group"].nil? && field["object"].nil?
+        new_parent[new_key] = parse_config(field)
+      else
+        new_parent[new_key] = loop_params(field)
+      end
+    end
+    new_parent
+  end
+
+  def parse_config(fields)
+    # parse event schema
+    if fields["group"].downcase == "common"
+      @value = ::LogStash::Inputs::Functions::Common.parse(fields)
+    elsif fields["group"].downcase == "internet"
+      @value = ::LogStash::Inputs::Functions::Internet.parse(fields)
+    elsif fields["group"].downcase == "finance"
+      @value = ::LogStash::Inputs::Functions::Finance.parse(fields)
+    elsif fields["group"].downcase == "address"
+      @value = ::LogStash::Inputs::Functions::Address.parse(fields)
+    elsif fields["group"].downcase == "color"
+      @value = ::LogStash::Inputs::Functions::Color.parse(fields)
+    elsif fields["group"].downcase == "commerce"
+      @value = ::LogStash::Inputs::Functions::Commerce.parse(fields)
+    elsif fields["group"].downcase == "lorem"
+      @value = ::LogStash::Inputs::Functions::Lorem.parse(fields)
+    elsif fields["group"].downcase == "person"
+      @value = ::LogStash::Inputs::Functions::Person.parse(fields)
+    else
+      @value = "INVALID GROUP"
+    end
+      return @value
   end
 
   def load_schema(raise_exception=false)
