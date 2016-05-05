@@ -12,6 +12,8 @@ module LogStash; module Inputs; class Functions;
         integer(data)
       elsif data["type"].downcase == "random_list"
         random_list(data)
+      elsif data["type"].downcase == "hex"
+        hex(data)
       else
         @value = "INVALID COMMON TYPE"
       end
@@ -21,26 +23,57 @@ module LogStash; module Inputs; class Functions;
     ## custom functions below ##
     ############################
     def self.integer(data)
-      if data["range"]
-        @min = data["range"]["min"]
-        @max = data["range"]["max"]
-        return rand(@min..@max)
-      elsif data["random"]
-        # TODO -- specify size ? Is that not a range?
-        return rand(1000000000000000000)
+
+      if !data["properties"].nil? && !data["properties"]["range"].nil? && !data["properties"]["range"]["min"].nil? && !data["properties"]["range"]["max"].nil?
+        min = data["properties"]["range"]["min"]
+        max = data["properties"]["range"]["max"]
+        return rand(min..max)
+
+      elsif !data["properties"].nil? && data["properties"]["digits"]
+        digits = data["properties"]["digits"]
+        decimals = data["properties"]["decimals"]
+        if data["properties"]["negative"]
+          number = Faker::Number.decimal(digits, decimals).to_f * -1
+        else
+          number = Faker::Number.decimal(digits, decimals).to_f
+        end
+        return number
+
+      elsif !data["properties"].nil? && data["properties"]["between"]
+        from = data["properties"]["from"]
+        to = data["properties"]["to"]
+        return Faker::Number.between(from, to)
+
       else
         return data["value"]
       end
+
     end
 
     def self.random_list(data)
       if !data["properties"].nil? && !data["properties"]["list"].nil?
-        @list = data["properties"]["list"]
-        return @list.sample
+        list = data["properties"]["list"]
+        return list.sample
       else
         return "INVALID LIST"
       end
     end
 
+    def self.hex(data)
+      size = data["properties"]["size"]
+      return Faker::Number.hexadecimal(size)
+    end
+
   end
 end;  end; end
+
+# ### Faker::Number
+#
+#
+# Faker::Number.between(1, 10) #=> 7
+#
+# Faker::Number.positive #=> 235.59238499107653
+#
+# Faker::Number.negative #=> -4480.042585669558
+#
+# Faker::Number.digit #=> "1"
