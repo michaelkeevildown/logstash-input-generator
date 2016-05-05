@@ -65,7 +65,7 @@ class LogStash::Inputs::Generator < LogStash::Inputs::Base
       event = LogStash::Event.new(@event_output)
       decorate(event)
       queue << event
-      eps = events_per_second(@schema["events_per_second"])
+      eps = events_per_second(@schema["event_speed"]["events_per_second"])
       Stud.stoppable_sleep(eps) { stop? }
     end
   end
