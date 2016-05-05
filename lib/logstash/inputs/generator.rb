@@ -52,7 +52,6 @@ class LogStash::Inputs::Generator < LogStash::Inputs::Base
         @logger.info("refreshing schema")
       end
 
-
       # set faker locale
       Faker::Config.locale = @schema["locale"]
       # create output hash
@@ -66,8 +65,14 @@ class LogStash::Inputs::Generator < LogStash::Inputs::Base
       event = LogStash::Event.new(@event_output)
       decorate(event)
       queue << event
-      Stud.stoppable_sleep(@schema["events_per_second"]) { stop? }
+      eps = events_per_second(@schema["events_per_second"])
+      Stud.stoppable_sleep(eps) { stop? }
     end
+  end
+
+  def events_per_second(events)
+    eps =  1.0 / events
+    return eps
   end
 
   def loop_params(schema)
@@ -139,6 +144,7 @@ class LogStash::Inputs::Generator < LogStash::Inputs::Base
   end
 
   def merge_schema!(data, raise_exception=false)
+      @logger.warn("reloading schema...")
       @schema = data
   end
 
