@@ -45,6 +45,7 @@ module LogStash; module Inputs; class Functions;
       end
     end
 
+    # Needs some work on this function...
     def self.between_date(data)
       if !data["properties"].nil? && !data["properties"]["from"].nil? && !data["properties"]["to"].nil?
         @to = data["properties"]["to"].to_i
@@ -75,6 +76,7 @@ module LogStash; module Inputs; class Functions;
       end
     end
 
+    # Needs some work on this function...
     def self.between_date_time(data)
       if !data["properties"].nil? && !data["properties"]["from"].nil? && !data["properties"]["to"].nil?
         @from = data["properties"]["to"].to_i
