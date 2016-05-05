@@ -26,15 +26,10 @@ class LogStash::Inputs::Generator < LogStash::Inputs::Base
 
   ## Logstash Config Params ##
 
-  # Set how frequently messages should be sent.
-  #
-  # The default, `1`, means send a message every second.
-  config :event_interval, :validate => :number, :default => 1
-
   # The full path of the external schema file. The format of the table
   # should be a standard JSON file.
   # NOTE: The JSON format only supports simple key/value, unnested objects.
-  config :schema_path, :validate => :path
+  config :schema_path, :validate => :path, :required => true
 
   # When using a schema file, this setting will indicate how frequently
   # (in seconds) logstash will check the schema file for updates.
@@ -58,13 +53,12 @@ class LogStash::Inputs::Generator < LogStash::Inputs::Base
     # we can abort the loop if stop? becomes true
     while !stop?
       # reload schema
-      if @schema_path
-        if @next_refresh < Time.now
-          load_schema
-          @next_refresh = Time.now + @schema_refresh_interval
-          @logger.info("refreshing schema")
-        end
+      if @next_refresh < Time.now
+        load_schema
+        @next_refresh = Time.now + @schema_refresh_interval
+        @logger.info("refreshing schema")
       end
+
 
       # set faker locale
       Faker::Config.locale = @schema["locale"]
@@ -79,7 +73,7 @@ class LogStash::Inputs::Generator < LogStash::Inputs::Base
       event = LogStash::Event.new(@event_output)
       decorate(event)
       queue << event
-      Stud.stoppable_sleep(@schema["event_speed"]) { stop? }
+      Stud.stoppable_sleep(@schema["events_per_second"]) { stop? }
     end
   end
 
