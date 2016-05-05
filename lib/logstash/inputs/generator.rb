@@ -36,7 +36,7 @@ class LogStash::Inputs::Generator < LogStash::Inputs::Base
 
     # reload schema
     if @schema_path
-      @next_refresh = Time.now + @schema_refresh_interval
+      @next_refresh = Time.now.to_i + @schema_refresh_interval
       raise_exception = true
       load_schema(raise_exception)
       @eps = events_per_second(@schema["event_speed"]["events_per_second"])
@@ -47,32 +47,38 @@ class LogStash::Inputs::Generator < LogStash::Inputs::Base
     # we can abort the loop if stop? becomes true
     while !stop?
       # reload schema
-      if @next_refresh < Time.now
+      if @next_refresh < Time.now.to_i
         load_schema
-        @next_refresh = Time.now + @schema_refresh_interval
+        @next_refresh = Time.now.to_i + @schema_refresh_interval
         @eps = events_per_second(@schema["event_speed"]["events_per_second"])
       end
 
-      # set faker locale
-      Faker::Config.locale = @schema["locale"]
-      # create output hash
-      @event_output = Hash.new
+      Thread.new {
+        submit_event(queue)
+      }
 
-      # call loop function
-      @event_output = loop_params(@schema)
-
-      # add defulat items to event
-      @event_output["host"] = @host
-      event = LogStash::Event.new(@event_output)
-      decorate(event)
-      queue << event
       Stud.stoppable_sleep(@eps) { stop? }
     end
   end
 
+  def submit_event(queue)
+    # set faker locale
+    Faker::Config.locale = @schema["locale"]
+    # create output hash
+    @event_output = Hash.new
+
+    # call loop function
+    @event_output = loop_params(@schema)
+
+    # add defulat items to event
+    @event_output["host"] = @host
+    event = LogStash::Event.new(@event_output)
+    decorate(event)
+    queue << event
+  end
+
   def events_per_second(events)
     eps =  1.0 / events
-    puts eps
     return eps
   end
 
@@ -145,7 +151,6 @@ class LogStash::Inputs::Generator < LogStash::Inputs::Base
   end
 
   def merge_schema!(data, raise_exception=false)
-      @logger.warn("reloading schema...")
       @schema = data
   end
 
