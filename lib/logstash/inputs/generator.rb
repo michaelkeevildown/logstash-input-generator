@@ -9,15 +9,8 @@ require "json"
 I18n.reload!
 
 class LogStash::Inputs::Generator < LogStash::Inputs::Base
-  require "logstash/inputs/functions/common"
-  require "logstash/inputs/functions/finance"
-  require "logstash/inputs/functions/internet"
-  require "logstash/inputs/functions/address"
-  require "logstash/inputs/functions/color"
-  require "logstash/inputs/functions/commerce"
-  require "logstash/inputs/functions/lorem"
-  require "logstash/inputs/functions/person"
-  require "logstash/inputs/functions/date"
+  # loads all custom functions from functions directory
+  Dir["#{File.dirname(__FILE__)}/functions/*.rb"].each { |f| load(f) }
 
   config_name "generator"
 
