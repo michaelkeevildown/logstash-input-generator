@@ -66,14 +66,3 @@ module LogStash; module Inputs; class Functions;
 
   end
 end;  end; end
-
-# ### Faker::Number
-#
-#
-# Faker::Number.between(1, 10) #=> 7
-#
-# Faker::Number.positive #=> 235.59238499107653
-#
-# Faker::Number.negative #=> -4480.042585669558
-#
-# Faker::Number.digit #=> "1"
