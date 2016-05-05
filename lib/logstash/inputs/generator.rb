@@ -26,7 +26,7 @@ class LogStash::Inputs::Generator < LogStash::Inputs::Base
 
   # When using a schema file, this setting will indicate how frequently
   # (in seconds) logstash will check the schema file for updates.
-  config :schema_refresh_interval, :validate => :number, :default => 1, :required => true
+  config :schema_refresh_interval, :validate => :number, :default => 10, :required => true
 
   ## Logstash Config Params ##
 
