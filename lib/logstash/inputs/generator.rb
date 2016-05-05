@@ -39,6 +39,7 @@ class LogStash::Inputs::Generator < LogStash::Inputs::Base
       @next_refresh = Time.now + @schema_refresh_interval
       raise_exception = true
       load_schema(raise_exception)
+      @eps = events_per_second(@schema["event_speed"]["events_per_second"])
     end
   end
 
@@ -49,7 +50,7 @@ class LogStash::Inputs::Generator < LogStash::Inputs::Base
       if @next_refresh < Time.now
         load_schema
         @next_refresh = Time.now + @schema_refresh_interval
-        @logger.info("refreshing schema")
+        @eps = events_per_second(@schema["event_speed"]["events_per_second"])
       end
 
       # set faker locale
@@ -65,13 +66,13 @@ class LogStash::Inputs::Generator < LogStash::Inputs::Base
       event = LogStash::Event.new(@event_output)
       decorate(event)
       queue << event
-      eps = events_per_second(@schema["event_speed"]["events_per_second"])
-      Stud.stoppable_sleep(eps) { stop? }
+      Stud.stoppable_sleep(@eps) { stop? }
     end
   end
 
   def events_per_second(events)
     eps =  1.0 / events
+    puts eps
     return eps
   end
 
