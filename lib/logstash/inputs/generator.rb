@@ -17,6 +17,7 @@ class LogStash::Inputs::Generator < LogStash::Inputs::Base
   require "logstash/inputs/functions/commerce"
   require "logstash/inputs/functions/lorem"
   require "logstash/inputs/functions/person"
+  require "logstash/inputs/functions/date"
 
   config_name "generator"
 
@@ -124,6 +125,8 @@ class LogStash::Inputs::Generator < LogStash::Inputs::Base
       @value = ::LogStash::Inputs::Functions::Lorem.parse(fields)
     elsif fields["group"].downcase == "person"
       @value = ::LogStash::Inputs::Functions::Person.parse(fields)
+    elsif fields["group"].downcase == "date"
+      @value = ::LogStash::Inputs::Functions::Dates.parse(fields)
     else
       @value = "INVALID GROUP"
     end
