@@ -39,7 +39,7 @@ class LogStash::Inputs::Generator < LogStash::Inputs::Base
       @next_refresh = Time.now.to_i + @schema_refresh_interval
       raise_exception = true
       load_schema(raise_exception)
-      @eps = events_per_second(@schema["event_speed"]["events_per_second"])
+      @eps = events_per_second(@schema["event_speed"])
     end
   end
 
@@ -50,13 +50,15 @@ class LogStash::Inputs::Generator < LogStash::Inputs::Base
       if @next_refresh < Time.now.to_i
         load_schema
         @next_refresh = Time.now.to_i + @schema_refresh_interval
-        @eps = events_per_second(@schema["event_speed"]["events_per_second"])
+        @eps = events_per_second(@schema["event_speed"])
       end
 
+      # start new thread to ensure loop is not blocked by process time from downstream functions
       Thread.new {
         submit_event(queue)
       }
 
+      # sleep between loops
       Stud.stoppable_sleep(@eps) { stop? }
     end
   end
@@ -78,8 +80,19 @@ class LogStash::Inputs::Generator < LogStash::Inputs::Base
   end
 
   def events_per_second(events)
-    eps =  1.0 / events
-    return eps
+    puts events
+    if !events["events_per_second"].nil? && events["events_per_second"] > 0
+      eps =  1.0 / events["events_per_second"]
+      return eps
+    elsif !events["hours"].nil?
+      hour = "1" # need to calculate hour dynamically
+      hour_range = events["hours"][hour]
+      eps = rand(hour_range["min"]..hour_range["max"])
+      puts eps.to_f
+      return 1.0
+    else
+      return 1.0
+    end
   end
 
   def loop_params(schema)
