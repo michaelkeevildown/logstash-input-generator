@@ -85,11 +85,14 @@ class LogStash::Inputs::Generator < LogStash::Inputs::Base
       eps =  1.0 / events["events_per_second"]
       return eps
     elsif !events["hours"].nil?
-      hour = "1" # need to calculate hour dynamically
-      hour_range = events["hours"][hour]
-      eps = rand(hour_range["min"]..hour_range["max"])
-      puts eps.to_f
-      return 1.0
+      if events["hours"].count == 24 # throw error
+        hour = Time.now.strftime('%k')
+        hour_range = events["hours"][hour]
+        eps = rand(hour_range["min"]..hour_range["max"])
+        return eps
+      else
+        raise RuntimeError.new("Incorrect number of hours in event speed. Only #{events["hours"].count} hours specified in config file, should be 24")
+      end
     else
       return 1.0
     end
