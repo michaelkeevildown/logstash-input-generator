@@ -1,5 +1,5 @@
 {
-  "event_speed": 1,
+  "events_per_second": 1,
   "locale": "en-GB",
   "fields": [
     {
@@ -19,9 +19,11 @@
       "type": "integer",
       "key": "number_range",
       "value": "random",
-      "range": {
-        "min": 10,
-        "max": 100
+      "properties": {
+        "range": {
+          "min": 10,
+          "max": 100
+        }
       }
     },
     {
@@ -38,8 +40,48 @@
     },
     {
       "group": "common",
-      "type": "random",
-      "key": "random",
+      "type": "integer",
+      "key": "number_range",
+      "value": "random",
+      "properties": {
+        "range": {
+          "min": 10,
+          "max": 100
+        }
+      }
+    },
+    {
+      "group": "common",
+      "type": "integer",
+      "key": "integer_random",
+      "properties": {
+        "digits": 5,
+        "decimals": 5,
+        "negative": true
+      }
+    },
+    {
+      "group": "common",
+      "type": "hex",
+      "key": "hex",
+      "properties": {
+        "size": 50
+      }
+    },
+    {
+      "group": "common",
+      "type": "integer",
+      "key": "integer_between",
+      "properties": {
+        "between": true,
+        "from": 50,
+        "to": 100
+      }
+    },
+    {
+      "group": "common",
+      "type": "random_list",
+      "key": "random_list_fields",
       "properties": {
         "list": [
           "one",
@@ -53,6 +95,23 @@
           "nine",
           "ten",
           "you get the idea ..."
+        ]
+      }
+    },
+    {
+      "group": "common",
+      "type": "random_list",
+      "key": "random_list_objects",
+      "properties": {
+        "list": [
+          {
+            "one": 1,
+            "and_another": 11
+          },
+          {
+            "two": 2,
+            "and_another": 22
+          }
         ]
       }
     },
@@ -407,11 +466,6 @@
     },
     {
       "group": "person",
-      "type": "name_with_middle",
-      "key": "name_with_middle"
-    },
-    {
-      "group": "person",
       "type": "name",
       "key": "name"
     },
@@ -445,6 +499,62 @@
       "type": "string",
       "key": "name-breaker",
       "value": "#############     name     ########################"
+    },
+    {
+      "group": "date",
+      "type": "future_date",
+      "key": "future_date",
+      "properties": {
+        "future": 100
+      }
+    },
+    {
+      "group": "date",
+      "type": "past_date",
+      "key": "past_date",
+      "properties": {
+        "past": 200
+      }
+    },
+    {
+      "group": "date",
+      "type": "between_date",
+      "key": "between_date",
+      "properties": {
+        "from": 100,
+        "to": 100
+      }
+    },
+    {
+      "group": "date",
+      "type": "future_date_time",
+      "key": "future_date_time",
+      "properties": {
+        "future": 2
+      }
+    },
+    {
+      "group": "date",
+      "type": "past_date_time",
+      "key": "past_date_time",
+      "properties": {
+        "past": 100
+      }
+    },
+    {
+      "group": "date",
+      "type": "between_date_time",
+      "key": "between_date_time",
+      "properties": {
+        "from": 100,
+        "to": 100
+      }
+    },
+    {
+      "group": "common",
+      "type": "string",
+      "key": "date-breaker",
+      "value": "#############     date     ########################"
     },
     {
       "group": "random",

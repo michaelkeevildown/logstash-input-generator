@@ -1,11 +1,139 @@
 {
-  "event_speed": 1,
-  "locale": "en-GB",
-  "fields":[
+  "events_per_second": 1,
+  "locale": "en-US",
+  "fields": [
     {
-      "group": "commerce",
-      "type": "department",
-      "key": "department"
+      "object": "nested",
+      "key": "bill_to",
+      "fields": [
+        {
+          "group": "person",
+          "type": "name",
+          "key": "name"
+        },
+        {
+          "group": "address",
+          "type": "secondary_address",
+          "key": "secondary_address"
+        },
+        {
+          "group": "address",
+          "type": "street_name",
+          "key": "street_name"
+        },
+        {
+          "group": "address",
+          "type": "street_address",
+          "key": "street_address"
+        },
+        {
+          "group": "address",
+          "type": "state",
+          "key": "state"
+        },
+        {
+          "group": "common",
+          "type": "string",
+          "key": "country",
+          "value": "USA"
+        },
+        {
+          "group": "address",
+          "type": "zip",
+          "key": "zip"
+        }
+      ]
+    },
+    {
+      "object": "nested",
+      "key": "ship_to",
+      "fields": [
+        {
+          "group": "person",
+          "type": "name",
+          "key": "name"
+        },
+        {
+          "group": "address",
+          "type": "secondary_address",
+          "key": "secondary_address"
+        },
+        {
+          "group": "address",
+          "type": "street_name",
+          "key": "street_name"
+        },
+        {
+          "group": "address",
+          "type": "street_address",
+          "key": "street_address"
+        },
+        {
+          "group": "address",
+          "type": "state",
+          "key": "state"
+        },
+        {
+          "group": "common",
+          "type": "string",
+          "key": "country",
+          "value": "USA"
+        },
+        {
+          "group": "address",
+          "type": "zip",
+          "key": "zip"
+        }
+      ]
+    },
+    {
+      "object": "nested",
+      "key": "payment",
+      "fields": [
+        {
+          "group": "finance",
+          "type": "credit_card_number",
+          "key": "credit_card_number",
+          "make": "visa"
+        },
+        {
+          "group": "finance",
+          "type": "credit_card_type",
+          "key": "credit_card_type"
+        },
+        {
+          "group": "finance",
+          "type": "credit_card_expiry",
+          "key": "credit_card_expiry"
+        },
+        {
+          "group": "finance",
+          "type": "bitcoin_address",
+          "key": "bitcoin_address"
+        }
+      ]
+    },
+    {
+      "object": "nested",
+      "key": "line_items",
+      "repeat": 5,
+      "fields": [
+        {
+          "group": "commerce",
+          "type": "department",
+          "key": "department"
+        },
+        {
+          "group": "commerce",
+          "type": "product_name",
+          "key": "product_name"
+        },
+        {
+          "group": "commerce",
+          "type": "price",
+          "key": "price"
+        }
+      ]
     }
   ]
 }
