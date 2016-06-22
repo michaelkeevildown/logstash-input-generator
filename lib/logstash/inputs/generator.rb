@@ -88,7 +88,8 @@ class LogStash::Inputs::Generator < LogStash::Inputs::Base
       if events["hours"].count == 24 # throw error
         hour = Time.now.strftime('%k')
         hour_range = events["hours"][hour]
-        eps = rand(hour_range["min"]..hour_range["max"])
+        eps = 1.0 / rand(hour_range["min"]..hour_range["max"])
+        puts eps
         return eps
       else
         raise RuntimeError.new("Incorrect number of hours in event speed. Only #{events["hours"].count} hours specified in config file, should be 24")
