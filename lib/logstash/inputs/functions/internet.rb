@@ -9,6 +9,8 @@ module LogStash; module Inputs; class Functions;
     def self.parse(data)
         if data["type"].downcase == "ipv4"
           ipv4(data)
+        elsif data["type"].downcase == "ipv4_internal"
+          ipv4_internal(data)
         elsif data["type"].downcase == "ipv6"
           ipv6(data)
         elsif data["type"].downcase == "email"
@@ -36,6 +38,11 @@ module LogStash; module Inputs; class Functions;
     def self.ipv4(data)
       if !data["sub-type"].nil? && data["sub-type"].downcase == "ipv4_cidr"
         return Faker::Internet.ip_v4_cidr
+      elsif !data["sub-type"].nil? && data["sub-type"].downcase == "ipv4_internal"
+        part2 = Faker::Number.between(0, 254)
+        part3 = Faker::Number.between(0, 254)
+        part4 = Faker::Number.between(1, 254)
+        return "10.#{part2}.#{part3}.#{part4}"
       else
         return IPAddr.new(rand(2**32),Socket::AF_INET).to_s
       end
