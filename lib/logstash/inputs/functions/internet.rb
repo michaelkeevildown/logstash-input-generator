@@ -9,8 +9,6 @@ module LogStash; module Inputs; class Functions;
     def self.parse(data)
         if data["type"].downcase == "ipv4"
           ipv4(data)
-        elsif data["type"].downcase == "ipv4_internal"
-          ipv4_internal(data)
         elsif data["type"].downcase == "ipv6"
           ipv6(data)
         elsif data["type"].downcase == "email"
