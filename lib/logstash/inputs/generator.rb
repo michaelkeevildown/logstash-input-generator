@@ -83,22 +83,19 @@ class LogStash::Inputs::Generator < LogStash::Inputs::Base
     # puts events
     if !events["events_per_second"].nil?
 
-      return eps_value(events["events_per_second"])
-      
+      eps = 1.0 / eps_value(events["events_per_second"])
+      return eps
+
     elsif !events["hours"].nil?
       if events["hours"].count == 24 # throw error
         hour = Time.now.strftime('%k')
         hour_range = events["hours"][hour]
-        if hour_range["min"] == 0
-          puts "## MIN eps can not be 0, defaulting to 1"
-          hour_range["min"] = 1
-        elsif hour_range["max"] == 0
-          puts "## MAX eps can not be 0, defaulting to 1"
-          hour_range["max"] = 1
-        elsif events["events_per_second"] < 0
-          puts "## Events Per Second can not be a negative number, defaulting to 1"
-          eps = 1.0
+        hour_range["min"] = eps_value(hour_range["min"])
+        hour_range["max"] = eps_value(hour_range["max"])
+        if hour_range["min"] > hour_range["max"]
+          raise RuntimeError.new("Hour Min param can not be bigger than Max param")
         end
+        puts "Min: #{hour_range["min"]}, Max: #{hour_range["max"]}"
         eps = 1.0 / rand(hour_range["min"]..hour_range["max"])
         puts eps
         return eps
@@ -110,7 +107,6 @@ class LogStash::Inputs::Generator < LogStash::Inputs::Base
 
   def eps_value(eps)
     if eps > 0
-      eps =  1.0 / eps
       return eps
     elsif eps == 0
       puts "## Events Per Second can not be 0, defaulting to 1"
