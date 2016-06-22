@@ -80,7 +80,7 @@ class LogStash::Inputs::Generator < LogStash::Inputs::Base
   end
 
   def events_per_second(events)
-    puts events
+    # puts events
     if !events["events_per_second"].nil? && events["events_per_second"] > 0
       eps =  1.0 / events["events_per_second"]
       return eps
@@ -88,6 +88,13 @@ class LogStash::Inputs::Generator < LogStash::Inputs::Base
       if events["hours"].count == 24 # throw error
         hour = Time.now.strftime('%k')
         hour_range = events["hours"][hour]
+        if hour_range["min"] == 0
+          puts "## MIN eps can not be 0, changing to 1"
+          hour_range["min"] = 1
+        elsif hour_range["max"] == 0
+          puts "## MAX eps can not be 0, changing to 1"
+          hour_range["max"] = 1
+        end
         eps = 1.0 / rand(hour_range["min"]..hour_range["max"])
         puts eps
         return eps
