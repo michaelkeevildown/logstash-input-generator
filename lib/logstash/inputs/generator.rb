@@ -81,19 +81,23 @@ class LogStash::Inputs::Generator < LogStash::Inputs::Base
 
   def events_per_second(events)
     # puts events
-    if !events["events_per_second"].nil? && events["events_per_second"] > 0
-      eps =  1.0 / events["events_per_second"]
-      return eps
+    if !events["events_per_second"].nil?
+
+      return eps_value(events["events_per_second"])
+      
     elsif !events["hours"].nil?
       if events["hours"].count == 24 # throw error
         hour = Time.now.strftime('%k')
         hour_range = events["hours"][hour]
         if hour_range["min"] == 0
-          puts "## MIN eps can not be 0, changing to 1"
+          puts "## MIN eps can not be 0, defaulting to 1"
           hour_range["min"] = 1
         elsif hour_range["max"] == 0
-          puts "## MAX eps can not be 0, changing to 1"
+          puts "## MAX eps can not be 0, defaulting to 1"
           hour_range["max"] = 1
+        elsif events["events_per_second"] < 0
+          puts "## Events Per Second can not be a negative number, defaulting to 1"
+          eps = 1.0
         end
         eps = 1.0 / rand(hour_range["min"]..hour_range["max"])
         puts eps
@@ -101,7 +105,18 @@ class LogStash::Inputs::Generator < LogStash::Inputs::Base
       else
         raise RuntimeError.new("Incorrect number of hours in event speed. Only #{events["hours"].count} hours specified in config file, should be 24")
       end
-    else
+    end
+  end
+
+  def eps_value(eps)
+    if eps > 0
+      eps =  1.0 / eps
+      return eps
+    elsif eps == 0
+      puts "## Events Per Second can not be 0, defaulting to 1"
+      return 1.0
+    elsif eps < 0
+      puts "## Events Per Second can not be a negative number, defaulting to 1"
       return 1.0
     end
   end
